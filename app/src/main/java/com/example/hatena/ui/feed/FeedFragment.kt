@@ -5,15 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.hatena.R
+import androidx.lifecycle.ViewModelProvider
+import com.example.hatena.databinding.FragmentFeedBinding
 
 
 class FeedFragment : Fragment() {
+    private val viewModel: FeedViewModel by lazy {
+        ViewModelProvider(this).get(FeedViewModel::class.java)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_feed, container, false)
+        val binding = FragmentFeedBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+        return binding.root
     }
 }
