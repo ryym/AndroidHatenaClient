@@ -32,6 +32,9 @@ class FeedFragment : Fragment() {
             }
         )
 
+        // TODO: arguments に応じて取得データを変える。
+        // TODO: エントリ選択時の挙動を移譲する。
+
         binding.hotEntryList.also {
             it.adapter = hotEntryListAdapter
             val layoutManager = LinearLayoutManager(activity)
