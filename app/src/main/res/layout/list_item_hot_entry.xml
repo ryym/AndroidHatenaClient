@@ -7,11 +7,16 @@
         <variable
             name="entry"
             type="com.example.hatena.api.HotEntry" />
+
+        <variable
+            name="entryClickListener"
+            type="com.example.hatena.ui.feed.HotEntryClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> entryClickListener.onClick(entry)}">
 
         <TextView
             android:id="@+id/hot_entry_title"

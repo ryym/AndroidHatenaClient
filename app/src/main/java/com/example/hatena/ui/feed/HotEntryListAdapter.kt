@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hatena.api.HotEntry
 import com.example.hatena.databinding.ListItemHotEntryBinding
 
-class HotEntryListAdapter :
+class HotEntryListAdapter(private val onEntryClick: HotEntryClickListener) :
     ListAdapter<HotEntry, HotEntryListAdapter.ViewHolder>(HotEntryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -17,7 +17,7 @@ class HotEntryListAdapter :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val entry = getItem(position)
-        holder.bind(entry)
+        holder.bind(entry, onEntryClick)
     }
 
     class ViewHolder private constructor(private val binding: ListItemHotEntryBinding) :
@@ -30,8 +30,10 @@ class HotEntryListAdapter :
             }
         }
 
-        fun bind(entry: HotEntry) {
+        fun bind(entry: HotEntry, onEntryClick: HotEntryClickListener) {
             binding.entry = entry
+            binding.entryClickListener = onEntryClick
+            binding.executePendingBindings()
         }
     }
 }
@@ -44,4 +46,8 @@ class HotEntryDiffCallback : DiffUtil.ItemCallback<HotEntry>() {
     override fun areContentsTheSame(oldItem: HotEntry, newItem: HotEntry): Boolean {
         return oldItem == newItem
     }
+}
+
+class HotEntryClickListener(val listener: (entry: HotEntry) -> Unit) {
+    fun onClick(entry: HotEntry) = listener(entry)
 }
