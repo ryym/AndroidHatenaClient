@@ -29,6 +29,15 @@ interface HatenaApi {
 
     @GET("hotentry.rss")
     suspend fun getHotEntries(): Rss
+
+    @GET("hotentry/social.rss")
+    suspend fun getSocialHotEntries(): Rss
+
+    @GET("hotentry/economics.rss")
+    suspend fun getEconomicsHotEntries(): Rss
+
+    @GET("hotentry/life.rss")
+    suspend fun getLifeHotEntries(): Rss
 }
 
 
