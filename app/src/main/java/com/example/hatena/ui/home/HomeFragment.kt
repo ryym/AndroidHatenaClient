@@ -6,10 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.hatena.R
 import com.example.hatena.databinding.FragmentHomeBinding
+import com.example.hatena.model.ChannelKind
 import com.example.hatena.ui.feed.FeedFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
+val tabs = listOf(
+    ChannelKind.ALL,
+    ChannelKind.SOCIAL,
+    ChannelKind.ECONOMICS,
+    ChannelKind.LIFE,
+)
 
 class HomeFragment : Fragment() {
     override fun onCreateView(
@@ -23,23 +31,30 @@ class HomeFragment : Fragment() {
         binding.feedViewPager.adapter = pagerAdapter
 
         TabLayoutMediator(binding.feedTabs, binding.feedViewPager) { tab, position ->
-            tab.text = "Tab: $position"
+            val titleId = tabTitleId(tabs[position])
+            tab.text = resources.getString(titleId)
         }.attach()
 
         return binding.root
+    }
+
+    private fun tabTitleId(kind: ChannelKind): Int {
+        return when (kind) {
+            ChannelKind.ALL -> R.string.channel_kind_all
+            ChannelKind.SOCIAL -> R.string.channel_kind_social
+            ChannelKind.ECONOMICS -> R.string.channel_kind_economics
+            ChannelKind.LIFE -> R.string.channel_kind_life
+        }
     }
 }
 
 class FeedFragmentStateAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
-        return 3
+        return tabs.size
     }
 
     override fun createFragment(position: Int): Fragment {
-        val fragment = FeedFragment()
-        fragment.arguments = Bundle().also {
-            it.putString("test", "tab: $position")
-        }
-        return fragment
+        val kind = tabs[position]
+        return FeedFragment.create(kind)
     }
 }

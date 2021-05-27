@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Hatena</string>
     <string name="hatena_title">はてなブックマーク</string>
+
+    <string name="channel_kind_all">総合</string>
+    <string name="channel_kind_social">世の中</string>
+    <string name="channel_kind_economics">政治と経済</string>
+    <string name="channel_kind_life">暮らし</string>
 </resources>
