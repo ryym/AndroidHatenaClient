@@ -20,4 +20,11 @@ class EntryFragment : Fragment() {
         binding.entryWebview.loadUrl(args.url)
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // TODO: エントリのタイトルをセットする。
+        // この方法だとダメっぽい。 actionBar が null.
+        // requireActivity().actionBar!!.title = "hogehoge"
+    }
 }

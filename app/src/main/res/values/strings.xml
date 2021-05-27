@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Hatena</string>
+    <string name="label_feed">はてなブックマーク</string>
 </resources>
