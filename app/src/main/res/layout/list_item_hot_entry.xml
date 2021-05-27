@@ -6,7 +6,7 @@
 
         <variable
             name="entry"
-            type="com.example.hatena.api.HotEntry" />
+            type="com.example.hatena.model.HotEntry" />
 
         <variable
             name="entryClickListener"

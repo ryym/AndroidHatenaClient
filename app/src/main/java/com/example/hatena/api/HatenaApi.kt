@@ -3,11 +3,9 @@ package com.example.hatena.api
 import android.os.Build
 import android.text.Html
 import androidx.annotation.RequiresApi
+import com.example.hatena.model.Rss
 import com.tickaroo.tikxml.TikXml
 import com.tickaroo.tikxml.TypeConverter
-import com.tickaroo.tikxml.annotation.Element
-import com.tickaroo.tikxml.annotation.PropertyElement
-import com.tickaroo.tikxml.annotation.Xml
 import com.tickaroo.tikxml.retrofit.TikXmlConverterFactory
 import retrofit2.Retrofit
 import retrofit2.http.GET
@@ -33,30 +31,6 @@ interface HatenaApi {
     suspend fun getHotEntries(): Rss
 }
 
-
-@Xml(name = "rdf:RDF")
-data class Rss(
-    @Element(name = "item")
-    val items: List<HotEntry>
-)
-
-@Xml(name = "item")
-data class HotEntry(
-    @PropertyElement
-    val title: String,
-
-    @PropertyElement
-    val link: String,
-
-    @PropertyElement
-    val description: String,
-
-    @PropertyElement(name = "hatena:bookmarkcount")
-    val bookmarkCount: Int,
-
-    @PropertyElement(name = "hatena:imageurl")
-    val imageUrl: String?
-)
 
 private class HtmlEscapeStringConverter : TypeConverter<String> {
     @RequiresApi(Build.VERSION_CODES.N)

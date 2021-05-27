@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hatena.api.HotEntry
+import com.example.hatena.model.HotEntry
 import com.example.hatena.databinding.ListItemHotEntryBinding
 
 class HotEntryListAdapter(private val onEntryClick: HotEntryClickListener) :

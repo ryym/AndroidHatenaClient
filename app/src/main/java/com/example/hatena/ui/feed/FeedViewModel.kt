@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hatena.api.HatenaApi
-import com.example.hatena.api.HotEntry
+import com.example.hatena.model.HotEntry
 import kotlinx.coroutines.launch
 
 class FeedViewModel : ViewModel() {
