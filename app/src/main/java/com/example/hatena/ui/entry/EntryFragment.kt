@@ -16,7 +16,8 @@ class EntryFragment : Fragment() {
         val args = EntryFragmentArgs.fromBundle(arguments)
 
         val binding = FragmentEntryBinding.inflate(inflater)
-        binding.tmpLinkText.text = args.url
+        binding.entryWebview.settings.javaScriptEnabled = true
+        binding.entryWebview.loadUrl(args.url)
         return binding.root
     }
 }
