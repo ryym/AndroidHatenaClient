@@ -16,16 +16,37 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> entryClickListener.onClick(entry)}">
+        android:onClick="@{() -> entryClickListener.onClick(entry)}"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/hot_entry_item_image"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcUrl="@{entry.imageUrl}" />
 
         <TextView
-            android:id="@+id/hot_entry_title"
-            android:layout_width="match_parent"
+            android:id="@+id/hot_entry_item_title"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:text="@{entry.title}"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@id/hot_entry_item_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/primary"
+            app:bookmarkCount="@{entry.bookmarkCount}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hot_entry_item_title" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

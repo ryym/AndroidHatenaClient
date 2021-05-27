@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hatena.databinding.FragmentFeedBinding
 
@@ -30,8 +31,13 @@ class FeedFragment : Fragment() {
                 viewModel.onEntryClick(entry)
             }
         )
-        binding.hotEntryList.adapter = hotEntryListAdapter
-        binding.hotEntryList.layoutManager = LinearLayoutManager(activity)
+
+        binding.hotEntryList.also {
+            it.adapter = hotEntryListAdapter
+            val layoutManager = LinearLayoutManager(activity)
+            it.layoutManager = layoutManager
+            it.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
+        }
 
         viewModel.entries.observe(viewLifecycleOwner, {
             it?.let {

@@ -52,7 +52,10 @@ data class HotEntry(
     val description: String,
 
     @PropertyElement(name = "hatena:bookmarkcount")
-    val bookmarkCount: Int
+    val bookmarkCount: Int,
+
+    @PropertyElement(name = "hatena:imageurl")
+    val imageUrl: String?
 )
 
 private class HtmlEscapeStringConverter : TypeConverter<String> {
