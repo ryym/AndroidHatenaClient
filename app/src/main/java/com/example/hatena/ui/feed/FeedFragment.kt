@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hatena.databinding.FragmentFeedBinding
 
 
@@ -22,6 +24,17 @@ class FeedFragment : Fragment() {
         val binding = FragmentFeedBinding.inflate(inflater)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
+        val hotEntryListAdapter = HotEntryListAdapter()
+        binding.hotEntryList.adapter = hotEntryListAdapter
+        binding.hotEntryList.layoutManager = LinearLayoutManager(activity)
+
+        viewModel.entries.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                hotEntryListAdapter.submitList(it)
+            }
+        })
+
         return binding.root
     }
 }

@@ -5,12 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hatena.api.HatenaApi
+import com.example.hatena.api.HotEntry
 import kotlinx.coroutines.launch
 
 class FeedViewModel : ViewModel() {
-    private val _feedRes = MutableLiveData<String>()
-    val feedRes: LiveData<String>
-        get() = _feedRes
+    private val _entries = MutableLiveData<List<HotEntry>>()
+    val entries: LiveData<List<HotEntry>>
+        get() = _entries
 
     init {
         fetchHotEntries()
@@ -20,8 +21,7 @@ class FeedViewModel : ViewModel() {
         val api = HatenaApi.create()
         viewModelScope.launch {
             val rss = api.getHotEntries()
-            val resp = "RSS: " + rss.items.joinToString { it.title }
-            _feedRes.value = resp
+            _entries.value = rss.items
         }
     }
 }
