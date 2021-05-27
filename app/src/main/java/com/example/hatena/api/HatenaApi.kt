@@ -51,7 +51,7 @@ data class HotEntry(
     @PropertyElement
     val description: String,
 
-    @PropertyElement(name = "hatena:bookmarkCount")
+    @PropertyElement(name = "hatena:bookmarkcount")
     val bookmarkCount: Int
 )
 
