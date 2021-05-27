@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hatena.databinding.FragmentFeedBinding
 
@@ -28,15 +27,23 @@ class FeedFragment : Fragment() {
 
         val hotEntryListAdapter = HotEntryListAdapter(
             onEntryClick = HotEntryClickListener { entry ->
-                Toast.makeText(context, "Click ${entry.link}!", Toast.LENGTH_LONG).show()
+                viewModel.onEntryClick(entry)
             }
         )
         binding.hotEntryList.adapter = hotEntryListAdapter
         binding.hotEntryList.layoutManager = LinearLayoutManager(activity)
 
-        viewModel.entries.observe(viewLifecycleOwner, Observer {
+        viewModel.entries.observe(viewLifecycleOwner, {
             it?.let {
                 hotEntryListAdapter.submitList(it)
+            }
+        })
+
+        viewModel.navigateToEntry.observe(viewLifecycleOwner, { entry ->
+            entry?.let {
+                val action = FeedFragmentDirections.actionFeedToEntry(entry.link)
+                findNavController().navigate(action)
+                viewModel.doneEntryNavigation()
             }
         })
 

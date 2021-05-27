@@ -9,5 +9,22 @@
         android:id="@+id/feedFragment"
         android:name="com.example.hatena.ui.feed.FeedFragment"
         android:label="fragment_feed"
-        tools:layout="@layout/fragment_feed" />
+        tools:layout="@layout/fragment_feed">
+        <action
+            android:id="@+id/action_feed_to_entry"
+            app:destination="@id/entryFragment">
+            <argument
+                android:name="url"
+                app:argType="string" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/entryFragment"
+        android:name="com.example.hatena.ui.entry.EntryFragment"
+        android:label="fragment_entry"
+        tools:layout="@layout/fragment_entry">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </fragment>
 </navigation>

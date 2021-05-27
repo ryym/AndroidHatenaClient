@@ -13,6 +13,10 @@ class FeedViewModel : ViewModel() {
     val entries: LiveData<List<HotEntry>>
         get() = _entries
 
+    private val _navigateToEntry = MutableLiveData<HotEntry>()
+    val navigateToEntry: LiveData<HotEntry>
+        get() = _navigateToEntry
+
     init {
         fetchHotEntries()
     }
@@ -23,5 +27,13 @@ class FeedViewModel : ViewModel() {
             val rss = api.getHotEntries()
             _entries.value = rss.items
         }
+    }
+
+    fun onEntryClick(entry: HotEntry) {
+        _navigateToEntry.value = entry
+    }
+
+    fun doneEntryNavigation() {
+        _navigateToEntry.value = null
     }
 }
