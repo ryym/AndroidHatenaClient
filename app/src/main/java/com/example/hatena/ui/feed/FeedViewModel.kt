@@ -11,9 +11,9 @@ class FeedViewModel(private val feedRepository: HatenaFeedRepository) : ViewMode
     val entries: LiveData<List<HotEntry>>
         get() = _entries
 
-    private val _navigateToEntry = MutableLiveData<HotEntry>()
-    val navigateToEntry: LiveData<HotEntry>
-        get() = _navigateToEntry
+    private val _entrySelection = MutableLiveData<HotEntry>()
+    val entrySelection: LiveData<HotEntry>
+        get() = _entrySelection
 
     fun fetchHotEntries(kind: ChannelKind) {
         viewModelScope.launch {
@@ -22,12 +22,12 @@ class FeedViewModel(private val feedRepository: HatenaFeedRepository) : ViewMode
         }
     }
 
-    fun onEntryClick(entry: HotEntry) {
-        _navigateToEntry.value = entry
+    fun onEntrySelected(entry: HotEntry) {
+        _entrySelection.value = entry
     }
 
-    fun doneEntryNavigation() {
-        _navigateToEntry.value = null
+    fun doneEntrySelection() {
+        _entrySelection.value = null
     }
 }
 

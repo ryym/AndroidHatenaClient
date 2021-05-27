@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.hatena.R
 import com.example.hatena.databinding.FragmentHomeBinding
 import com.example.hatena.model.ChannelKind
+import com.example.hatena.model.HotEntry
 import com.example.hatena.ui.feed.FeedFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -19,7 +21,7 @@ val tabs = listOf(
     ChannelKind.LIFE,
 )
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), FeedFragment.OnEntrySelectedListener {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,7 +29,7 @@ class HomeFragment : Fragment() {
     ): View? {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
 
-        val pagerAdapter = FeedFragmentStateAdapter(this)
+        val pagerAdapter = FeedFragmentStateAdapter(this, this)
         binding.feedViewPager.adapter = pagerAdapter
 
         TabLayoutMediator(binding.feedTabs, binding.feedViewPager) { tab, position ->
@@ -46,15 +48,23 @@ class HomeFragment : Fragment() {
             ChannelKind.LIFE -> R.string.channel_kind_life
         }
     }
+
+    override fun onEntrySelected(entry: HotEntry) {
+        val action = HomeFragmentDirections.actionOpenEntry(entry.link)
+        findNavController().navigate(action)
+    }
 }
 
-class FeedFragmentStateAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class FeedFragmentStateAdapter(
+    fragment: Fragment,
+    private val onEntrySelected: FeedFragment.OnEntrySelectedListener
+) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return tabs.size
     }
 
     override fun createFragment(position: Int): Fragment {
         val kind = tabs[position]
-        return FeedFragment.create(kind)
+        return FeedFragment.create(kind, onEntrySelected)
     }
 }

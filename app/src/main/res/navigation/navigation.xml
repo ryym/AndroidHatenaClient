@@ -6,24 +6,18 @@
     app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/feedFragment"
-        android:name="com.example.hatena.ui.feed.FeedFragment"
+        android:id="@+id/homeFragment"
+        android:name="com.example.hatena.ui.home.HomeFragment"
         android:label="@string/hatena_title"
-        tools:layout="@layout/fragment_feed">
+        tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_feed_to_entry"
+            android:id="@+id/action_open_entry"
             app:destination="@id/entryFragment">
             <argument
                 android:name="url"
                 app:argType="string" />
         </action>
     </fragment>
-
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.hatena.ui.home.HomeFragment"
-        android:label="@string/hatena_title"
-        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/entryFragment"

@@ -7,27 +7,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hatena.databinding.FragmentFeedBinding
 import com.example.hatena.model.ChannelKind
+import com.example.hatena.model.HotEntry
 import com.example.hatena.repository.HatenaFeedRepository
 
 private val ARG_CHANNEL_KIND = "channel_kind"
 
 class FeedFragment : Fragment() {
     companion object {
-        fun create(kind: ChannelKind): FeedFragment {
+        fun create(kind: ChannelKind, onEntrySelected: OnEntrySelectedListener): FeedFragment {
             val fragment = FeedFragment()
             fragment.arguments = Bundle().also {
                 it.putString(ARG_CHANNEL_KIND, kind.id)
             }
+            fragment.setOnEntrySelectedListener(onEntrySelected)
             return fragment
         }
     }
 
     private lateinit var viewModel: FeedViewModel
+    private var onEntrySelected: OnEntrySelectedListener? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +47,7 @@ class FeedFragment : Fragment() {
 
         val hotEntryListAdapter = HotEntryListAdapter(
             onEntryClick = HotEntryClickListener { entry ->
-                viewModel.onEntryClick(entry)
+                viewModel.onEntrySelected(entry)
             }
         )
         viewModel.entries.observe(viewLifecycleOwner, {
@@ -54,12 +56,10 @@ class FeedFragment : Fragment() {
             }
         })
 
-        // TODO: エントリ選択時の挙動を移譲する。
-        viewModel.navigateToEntry.observe(viewLifecycleOwner, { entry ->
+        viewModel.entrySelection.observe(viewLifecycleOwner, { entry ->
             entry?.let {
-                val action = FeedFragmentDirections.actionFeedToEntry(entry.link)
-                findNavController().navigate(action)
-                viewModel.doneEntryNavigation()
+                onEntrySelected?.onEntrySelected(entry)
+                viewModel.doneEntrySelection()
             }
         })
 
@@ -75,5 +75,13 @@ class FeedFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    fun setOnEntrySelectedListener(callback: OnEntrySelectedListener) {
+        this.onEntrySelected = callback
+    }
+
+    interface OnEntrySelectedListener {
+        fun onEntrySelected(entry: HotEntry)
     }
 }
