@@ -1,18 +1,30 @@
 package com.example.hatena.ui.feed
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.hatena.model.HotEntry
+import com.example.hatena.databinding.ListItemHeadHotEntryBinding
 import com.example.hatena.databinding.ListItemHotEntryBinding
+import com.example.hatena.model.HotEntry
+
+private const val VIEW_TYPE_HEAD = 0
+private const val VIEW_TYPE_NORMAL = 1
 
 class HotEntryListAdapter(private val onEntryClick: HotEntryClickListener) :
     ListAdapter<HotEntry, HotEntryListAdapter.ViewHolder>(HotEntryDiffCallback()) {
 
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) VIEW_TYPE_HEAD else VIEW_TYPE_NORMAL
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return when (viewType) {
+            VIEW_TYPE_HEAD -> HeadViewHolder.from(parent)
+            else -> NormalViewHolder.from(parent)
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -20,17 +32,38 @@ class HotEntryListAdapter(private val onEntryClick: HotEntryClickListener) :
         holder.bind(entry, onEntryClick)
     }
 
-    class ViewHolder private constructor(private val binding: ListItemHotEntryBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    abstract class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        abstract fun bind(entry: HotEntry, onEntryClick: HotEntryClickListener)
+    }
+
+    class HeadViewHolder private constructor(private val binding: ListItemHeadHotEntryBinding) :
+        ViewHolder(binding.root) {
         companion object {
-            fun from(parent: ViewGroup): ViewHolder {
+            fun from(parent: ViewGroup): HeadViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = ListItemHotEntryBinding.inflate(layoutInflater, parent, false)
-                return ViewHolder(binding)
+                val binding = ListItemHeadHotEntryBinding.inflate(layoutInflater, parent, false)
+                return HeadViewHolder(binding)
             }
         }
 
-        fun bind(entry: HotEntry, onEntryClick: HotEntryClickListener) {
+        override fun bind(entry: HotEntry, onEntryClick: HotEntryClickListener) {
+            binding.entry = entry
+            binding.entryClickListener = onEntryClick
+            binding.executePendingBindings()
+        }
+    }
+
+    class NormalViewHolder private constructor(private val binding: ListItemHotEntryBinding) :
+        ViewHolder(binding.root) {
+        companion object {
+            fun from(parent: ViewGroup): NormalViewHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val binding = ListItemHotEntryBinding.inflate(layoutInflater, parent, false)
+                return NormalViewHolder(binding)
+            }
+        }
+
+        override fun bind(entry: HotEntry, onEntryClick: HotEntryClickListener) {
             binding.entry = entry
             binding.entryClickListener = onEntryClick
             binding.executePendingBindings()
@@ -38,7 +71,7 @@ class HotEntryListAdapter(private val onEntryClick: HotEntryClickListener) :
     }
 }
 
-class HotEntryDiffCallback : DiffUtil.ItemCallback<HotEntry>() {
+private class HotEntryDiffCallback : DiffUtil.ItemCallback<HotEntry>() {
     override fun areItemsTheSame(oldItem: HotEntry, newItem: HotEntry): Boolean {
         return oldItem.link == newItem.link
     }
