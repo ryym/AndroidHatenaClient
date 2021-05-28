@@ -1,7 +1,6 @@
 package com.example.hatena.ui.feed
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,33 +38,26 @@ class FeedFragment : Fragment() {
         val viewModelFactory = FeedViewModelFactory(HatenaFeedRepository.create())
         viewModel = ViewModelProvider(this, viewModelFactory).get(FeedViewModel::class.java)
 
-        val channelKind = ChannelKind.fromId(requireArguments().getString(ARG_CHANNEL_KIND))
-        channelKind?.let {
-            Log.d("FeedFragment", "fetch hot entries of $channelKind")
-            viewModel.fetchHotEntries(channelKind)
-        }
+        val binding = FragmentFeedBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        val args = Args.fromArguments(requireArguments())
 
         val hotEntryListAdapter = HotEntryListAdapter(
             onEntryClick = HotEntryClickListener { entry ->
                 viewModel.onEntrySelected(entry)
             }
         )
+
+        viewModel.fetchHotEntries(args.channelKind)
+
         viewModel.entries.observe(viewLifecycleOwner, {
             it?.let {
                 hotEntryListAdapter.submitList(it)
+                binding.hotEntryListSwipeContainer.isRefreshing = false
             }
         })
-
-        viewModel.entrySelection.observe(viewLifecycleOwner, { entry ->
-            entry?.let {
-                onEntrySelected?.onEntrySelected(entry)
-                viewModel.doneEntrySelection()
-            }
-        })
-
-        val binding = FragmentFeedBinding.inflate(inflater)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
 
         binding.hotEntryList.also {
             it.adapter = hotEntryListAdapter
@@ -73,6 +65,17 @@ class FeedFragment : Fragment() {
             it.layoutManager = layoutManager
             it.addItemDecoration(DividerItemDecoration(activity, layoutManager.orientation))
         }
+
+        binding.hotEntryListSwipeContainer.setOnRefreshListener {
+            viewModel.fetchHotEntries(args.channelKind)
+        }
+
+        viewModel.entrySelection.observe(viewLifecycleOwner, { entry ->
+            entry?.let {
+                onEntrySelected?.onEntrySelected(entry)
+                viewModel.doneEntrySelection()
+            }
+        })
 
         return binding.root
     }
@@ -83,5 +86,14 @@ class FeedFragment : Fragment() {
 
     interface OnEntrySelectedListener {
         fun onEntrySelected(entry: HotEntry)
+    }
+
+    private data class Args(val channelKind: ChannelKind) {
+        companion object {
+            fun fromArguments(arguments: Bundle): Args {
+                val channelKind = ChannelKind.fromId(arguments.getString(ARG_CHANNEL_KIND))
+                return Args(requireNotNull(channelKind))
+            }
+        }
     }
 }
