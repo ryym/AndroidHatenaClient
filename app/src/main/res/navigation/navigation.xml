@@ -14,6 +14,9 @@
             android:id="@+id/action_open_entry"
             app:destination="@id/entryFragment">
             <argument
+                android:name="title"
+                app:argType="string" />
+            <argument
                 android:name="url"
                 app:argType="string" />
         </action>
@@ -24,6 +27,9 @@
         android:name="com.example.hatena.ui.entry.EntryFragment"
         android:label=""
         tools:layout="@layout/fragment_entry">
+        <argument
+            android:name="title"
+            app:argType="string" />
         <argument
             android:name="url"
             app:argType="string" />

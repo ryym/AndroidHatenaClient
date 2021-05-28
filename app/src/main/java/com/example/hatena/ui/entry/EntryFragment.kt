@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.hatena.databinding.FragmentEntryBinding
 
@@ -15,16 +16,14 @@ class EntryFragment : Fragment() {
     ): View? {
         val args = EntryFragmentArgs.fromBundle(arguments)
 
+        val activity = requireActivity() as? AppCompatActivity
+        activity?.supportActionBar?.also {
+            it.title = args.title
+        }
+
         val binding = FragmentEntryBinding.inflate(inflater)
         binding.entryWebview.settings.javaScriptEnabled = true
         binding.entryWebview.loadUrl(args.url)
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // TODO: エントリのタイトルをセットする。
-        // この方法だとダメっぽい。 actionBar が null.
-        // requireActivity().actionBar!!.title = "hogehoge"
     }
 }

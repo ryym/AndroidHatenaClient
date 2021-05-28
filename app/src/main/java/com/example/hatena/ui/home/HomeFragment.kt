@@ -50,7 +50,7 @@ class HomeFragment : Fragment(), FeedFragment.OnEntrySelectedListener {
     }
 
     override fun onEntrySelected(entry: HotEntry) {
-        val action = HomeFragmentDirections.actionOpenEntry(entry.link)
+        val action = HomeFragmentDirections.actionOpenEntry(entry.title, entry.link)
         findNavController().navigate(action)
     }
 }
