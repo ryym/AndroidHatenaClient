@@ -13,7 +13,7 @@ class EntryFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val args = EntryFragmentArgs.fromBundle(arguments)
 
         val activity = requireActivity() as? AppCompatActivity

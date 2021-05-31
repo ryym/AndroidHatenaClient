@@ -26,7 +26,7 @@ class HomeFragment : Fragment(), FeedFragment.OnEntrySelectedListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         val pagerAdapter = FeedFragmentStateAdapter(this, this)

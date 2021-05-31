@@ -15,9 +15,9 @@ import com.example.hatena.model.ChannelKind
 import com.example.hatena.model.HotEntry
 import com.example.hatena.repository.HatenaFeedRepository
 
-private val ARG_CHANNEL_KIND = "channel_kind"
+private const val ARG_CHANNEL_KIND = "channel_kind"
 
-class FeedFragment : Fragment() {
+class FeedFragment private constructor() : Fragment() {
     companion object {
         fun create(kind: ChannelKind, onEntrySelected: OnEntrySelectedListener): FeedFragment {
             val fragment = FeedFragment()
@@ -36,7 +36,7 @@ class FeedFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val viewModelFactory = FeedViewModelFactory(HatenaFeedRepository.create())
         viewModel = ViewModelProvider(this, viewModelFactory).get(FeedViewModel::class.java)
 
