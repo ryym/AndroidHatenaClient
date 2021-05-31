@@ -12,7 +12,11 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_open_entry"
-            app:destination="@id/entryFragment">
+            app:destination="@id/entryFragment"
+            app:enterAnim="@anim/nav_zoom_enter"
+            app:exitAnim="@anim/nav_zoom_exit"
+            app:popEnterAnim="@anim/nav_zoom_pop_enter"
+            app:popExitAnim="@anim/nav_zoom_pop_exit">
             <argument
                 android:name="title"
                 app:argType="string" />
